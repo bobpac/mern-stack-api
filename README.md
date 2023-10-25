@@ -1,3 +1,11 @@
+# mern server
+
+1. After cloning, copy the .env to the new repo and change the mongoDB database name.
+
+2. Run 
+'''
+npm install
+'''
 
 ## To run,
 
