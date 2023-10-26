@@ -20,6 +20,10 @@ const PORT = process.env.PORT || SERVERDEVPORT
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+// Middleware to check and verify a JWT and
+// assign the user object from the JWT to req.user
+app.use(require('./config/checkToken'));
+
 app.use('/users', userRouter)
 app.use('/cities',cityRouter)
 
