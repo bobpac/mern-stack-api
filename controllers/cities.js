@@ -45,18 +45,11 @@ async function getAll(req, res) {
 async function getZipcode(req, res) {
   try {
     // const key = "01HDGZYF63GVDDC77MKCNHHJAJ"
-    console.log(req.params)
     const zipCode = req.params.id
     const key = process.env.ZIPCODESTACK_KEY
-    console.log(`getZipcode key=${key}`)
-    console.log(`https://api.zipcodestack.com/v1/search?codes=${zipCode}&country=us&apikey=${key}`)
     res1 = await fetch(`https://api.zipcodestack.com/v1/search?codes=${zipCode}&country=us&apikey=${key}`)
     res.body = await res1.json()
-    console.log(`done 0`)
-    console.log(res.body)
-    console.log(`done 1`)
     const results1 = res.body.results
-    console.log(`done 2`)
     // results1 = 
     // 34609": [
     //   {
@@ -73,7 +66,6 @@ async function getZipcode(req, res) {
     //   ]
 
     const results = results1[Object.keys(results1)[0]]
-    console.log(`done 3`)
     // results[0] = 
     //     "postal_code": "34609",
     //     "country_code": "US",
@@ -87,30 +79,26 @@ async function getZipcode(req, res) {
 
     // we don't need city_en or state_en
     if (Array.isArray(results)) {
-      console.log(`done 3.1`)
       delete results[0].city_en
       delete results[0].state_en
-      console.log(`done 3.2`)
-      console.log(results[0])
-      console.log(`done 3.3`)
-      console.log(JSON.stringify(results[0]))
-      console.log(`done 3.31`)
-
-      // res.json(JSON.stringify(results[0]))
-
-      console.log(`done 3.4`)
-      // res.status(200)
-      console.log(`done 4`)
+      // console.log(`req.params=${JSON.stringify(req.params)}`)
+      results[0].user = req.user._id;
+      try {
+        // All body parameters are strings - no conversions needed
+        const city = await City.create(results[0])
+        res.json(city)
+        res.status(200)
+      } catch (err) {
+        console.log(`done 4.0 - err =r ${err}`)
+        res.status(400).json(err)
+      }
     } else {
       // zip code is invalid
       res.json(undefined)
       res.status(404)
-      console.log(`done 5`)
     }
   } catch (err) {
     res.status(400).json(err)
-    console.log(`done 6`)
   }
-  console.log(`done 7`)
-  console.log(res.body)
+  console.log(res.body.results)
 }
