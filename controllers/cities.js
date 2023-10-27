@@ -4,29 +4,15 @@ const User = require('../models/user')
 const City = require('../models/city')
 
 module.exports = {
-  create,
   delete: delCity,
   getAll,
   getZipcode,
   getWeather
 }
 
-async function create(req, res) {
-  try {
-    // All body parameters are strings - no conversions needed
-    const city = await City.create(req.body)
-    res.json(city)
-    res.status(200)
-  } catch (err) {
-    res.status(400).json(err)
-  }
-}
-
 async function delCity(req, res) {
   try {
-    // console.log(req.params.id)
     const city = await City.findByIdAndRemove(req.params.id)
-    console.log(city)
     res.json(city)
     res.status(200)
   } catch (err) {
@@ -46,7 +32,6 @@ async function getAll(req, res) {
 
 async function getZipcode(req, res) {
   try {
-    // const key = "01HDGZYF63GVDDC77MKCNHHJAJ"
     const zipCode = req.params.id
     const key = process.env.ZIPCODESTACK_KEY
     res1 = await fetch(`https://api.zipcodestack.com/v1/search?codes=${zipCode}&country=us&apikey=${key}`)
@@ -90,9 +75,8 @@ async function getZipcode(req, res) {
         const city = await City.create(results[0])
         res.json(city)
         res.status(200)
-        res.send(res.json(city))
       } catch (err) {
-        console.log(`done 4.0 - err =r ${err}`)
+        console.log(`getZipcode: err = ${err}`)
         res.status(400).json(err)
       }
     } else {
@@ -103,18 +87,14 @@ async function getZipcode(req, res) {
   } catch (err) {
     res.status(400).json(err)
   }
-  console.log(res.body.results)
+  // console.log(res.body.results)
 }
 
 async function getWeather(req, res) {
-  console.log("banana")
   const city = await City.findById(req.params.id)
   const key = process.env.OPENWEATHERMAP_KEY
   const command = `https://api.openweathermap.org/data/3.0/onecall?lat=${city.latitude}&lon=${city.longitude}&appid=${key}&units=imperial&exclude=current,minutely,hourly,alerts`
   const response = await fetch(command)
   const data = await response.json()
-  console.log(data);
-  // await console.log(apple)
-  // console.log(`getWeather: res.body=${JSON.stringify(res.body)}`);
   res.send(data)
 }
