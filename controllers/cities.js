@@ -96,5 +96,6 @@ async function getWeather(req, res) {
   const command = `https://api.openweathermap.org/data/3.0/onecall?lat=${city.latitude}&lon=${city.longitude}&appid=${key}&units=imperial&exclude=current,minutely,hourly,alerts`
   const response = await fetch(command)
   const data = await response.json()
+  data.location = `${city.city}, ${city.state_code}`
   res.send(data)
 }
