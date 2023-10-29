@@ -22,7 +22,7 @@ async function delCity(req, res) {
 
 async function getAll(req, res) {
   try {
-    const cities = await City.find({}).sort('city');
+    const cities = await City.find({'user': req.user._id}).sort('city');
     res.json(cities)
     res.status(200)
   } catch (err) {
