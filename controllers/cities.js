@@ -32,25 +32,25 @@ async function getAll(req, res) {
 
 async function getZipcode(req, res) {
   try {
-    const zipCode = req.params.id
-    const key = process.env.ZIPCODESTACK_KEY
-    res1 = await fetch(`https://api.zipcodestack.com/v1/search?codes=${zipCode}&country=us&apikey=${key}`)
-    res.body = await res1.json()
-    const results1 = res.body.results
-    // results1 = 
-    // 34609": [
-    //   {
-        // "postal_code": "34609",
-        // "country_code": "US",
-        // "latitude": 28.4794,
-        // "longitude": -82.5083,
-        // "city": "Spring Hill",
-        // "state": "Florida",
-        // "city_en": "Spring Hill",
-        // "state_en": "Florida",
-        // "state_code": "FL"
-    //   }
-    //   ]
+    // const zipCode = req.params.id
+    // const key = process.env.ZIPCODESTACK_KEY
+    // res1 = await fetch(`https://api.zipcodestack.com/v1/search?codes=${zipCode}&country=us&apikey=${key}`)
+    // res.body = await res1.json()
+    // const results1 = res.body.results
+    const results1 = {
+    "34609": [
+      {
+        "postal_code": "34609",
+        "country_code": "US",
+        "latitude": 28.4794,
+        "longitude": -82.5083,
+        "city": "Spring Hill",
+        "state": "Florida",
+        "city_en": "Spring Hill",
+        "state_en": "Florida",
+        "state_code": "FL"
+      }
+      ]}
 
     const results = results1[Object.keys(results1)[0]]
     // results[0] = 
