@@ -23,6 +23,7 @@ async function delCity(req, res) {
 async function getAll(req, res) {
   try {
     const cities = await City.find({'user': req.user._id}).sort('city');
+    // const cities = await City.find({}).sort('city');
     res.json(cities)
     res.status(200)
   } catch (err) {
@@ -53,7 +54,7 @@ async function getZipcode(req, res) {
     //   ]}
 
     const results = results1[Object.keys(results1)[0]]
-    // results[0] = 
+    // results[0] =
     //     "postal_code": "34609",
     //     "country_code": "US",
     //     "latitude": 28.4794,
