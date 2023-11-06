@@ -95,8 +95,13 @@ async function getWeather(req, res) {
   const city = await City.findById(req.params.id)
   const key = process.env.OPENWEATHERMAP_KEY
   const command = `https://api.openweathermap.org/data/3.0/onecall?lat=${city.latitude}&lon=${city.longitude}&appid=${key}&units=imperial&exclude=current,minutely,hourly,alerts`
-  const response = await fetch(command)
-  const data = await response.json()
-  data.location = `${city.city}, ${city.state_code}`
-  res.send(data)
+  try {
+    const response = await fetch(command)
+    const data = await response.json()
+    data.location = `${city.city}, ${city.state_code}`
+    res.send(data)
+  } catch (err) {
+    res.status(400).json(err)
+  }
+
 }
